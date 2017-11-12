@@ -1,0 +1,180 @@
+library(ggplot2)
+library(dplyr)
+library(scales)
+library(tidyr)
+library(reshape2)
+
+
+covType <- read.csv("covtype.data", sep = ",")
+
+fieldNames <- c(
+  'Elevation',
+  'Aspec',
+  'Slope',
+  'Horizontal_Distance_To_Hydrology',
+  'Vertical_Distance_To_Hydrology',
+  'Horizontal_Distance_To_Roadways',
+  'Hillshade_9am',
+  'Hillshade_Noon',
+  'Hillshade_3pm',
+  'Horizontal_Distance_To_Fire_Points',
+  paste('Wilderness_Area', 1:4, sep = '_'),
+  paste('Soil_Type', 1:40, sep = '_'),
+  'Cover_Type'
+)
+
+colnames(covType) <- fieldNames
+
+covType$Cover_Type <- factor(covType$Cover_Type)
+
+## Count of cover types ====
+covType %>% 
+  group_by(Cover_Type) %>% 
+  summarise(n = n()) %>% 
+  ggplot() +
+  geom_bar(aes(x = Cover_Type %>% as.factor, y = n), stat = 'identity',
+           fill = 'darkolivegreen3', 
+           col= "darkolivegreen4") +
+  geom_label(aes(x = Cover_Type %>% as.factor, y = n, label = comma(n)),
+             # fill = 'darkolivegreen3', 
+             col= "darkolivegreen4")+
+  xlab("Cover type") +
+  ylab("Count") +
+  theme_minimal() %+replace%
+  theme(plot.title = element_text(size = 13, hjust = .5))+
+  scale_y_continuous(labels = comma) +
+  ggtitle("Count of cover types")
+
+
+
+# Soil ====
+covTypeSplit <-  covType %>%  split.data.frame(f = covType$Cover_Type)
+
+covType1 <-covTypeSplit[[1]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+covType2 <-covTypeSplit[[2]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+covType3 <-covTypeSplit[[3]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+covType4 <-covTypeSplit[[4]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+covType5 <-covTypeSplit[[5]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+covType6 <-covTypeSplit[[6]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+covType7 <-covTypeSplit[[7]] %>% select_('Soil_Type_1','Soil_Type_2','Soil_Type_3','Soil_Type_4','Soil_Type_5','Soil_Type_6','Soil_Type_7','Soil_Type_8','Soil_Type_9','Soil_Type_10','Soil_Type_11','Soil_Type_12','Soil_Type_13','Soil_Type_14','Soil_Type_15','Soil_Type_16','Soil_Type_17','Soil_Type_18','Soil_Type_19','Soil_Type_20','Soil_Type_21','Soil_Type_22','Soil_Type_23','Soil_Type_24','Soil_Type_25','Soil_Type_26','Soil_Type_27','Soil_Type_28','Soil_Type_29','Soil_Type_30','Soil_Type_31','Soil_Type_32','Soil_Type_33','Soil_Type_34','Soil_Type_35','Soil_Type_36','Soil_Type_37','Soil_Type_38','Soil_Type_39','Soil_Type_40') %>% apply(2, "sum")
+
+soildDf <- rbind(covType1, covType2, covType3, covType4, covType5, covType6, covType7)
+
+
+soildDf %<>% melt %>% 
+  group_by(Var1, Var2) %>% 
+  summarise(n = sum(value)) %>% 
+  mutate(perc = n/sum(n)) 
+
+levels(soildDf$Var2) <- gsub("Soil_Type_", "", levels(soildDf$Var2))
+levels(soildDf$Var1) <- gsub("covType", "Cover Type ", levels(soildDf$Var1))
+
+soildDf %>% 
+  ggplot() +
+  geom_bar(aes(x = Var2, y = perc), stat = 'identity',
+           fill = 'darkolivegreen3', 
+           col= "darkolivegreen4") +
+   facet_grid(Var1~.) +
+  xlab("Soil types") +
+  ylab("Cover types") +
+  ggtitle("Distribution of soil types per cover type") +
+  theme_minimal() %+replace%
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        plot.title = element_text(hjust = .5, size = 14))
+
+
+
+
+## Wilderness ====
+
+covTypeSplit <-  covType %>%  split.data.frame(f = covType$Cover_Type)
+
+covType1 <-covTypeSplit[[1]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+covType2 <-covTypeSplit[[2]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+covType3 <-covTypeSplit[[3]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+covType4 <-covTypeSplit[[4]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+covType5 <-covTypeSplit[[5]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+covType6 <-covTypeSplit[[6]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+covType7 <-covTypeSplit[[7]] %>% select_("Wilderness_Area_1", "Wilderness_Area_2", "Wilderness_Area_3", "Wilderness_Area_4") %>% apply(2, "sum")
+
+
+
+wildernessDf <- rbind(covType1, covType2, covType3, covType4, covType5, covType6, covType7)
+
+
+wildernessDf %<>% melt %>% 
+  group_by(Var1, Var2) %>% 
+  summarise(n = sum(value)) %>% 
+  mutate(perc = n/sum(n)) 
+
+levels(wildernessDf$Var2) <- gsub("Wilderness_Area_", "", levels(wildernessDf$Var2))
+levels(wildernessDf$Var1) <- gsub("covType", "Cover Type ", levels(wildernessDf$Var1))
+
+wildernessDf %>% 
+  ggplot() +
+  geom_bar(aes(x = Var2, y = perc), stat = 'identity',
+           fill = 'darkolivegreen3', 
+           col= "darkolivegreen4") +
+  facet_grid(Var1~.) +
+  xlab("Wilderness area") +
+  ylab("Cover types") +
+  ggtitle("Distribution of wilderness areas per cover type") +
+  theme_minimal() %+replace%
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        plot.title = element_text(hjust = .5, size = 14))
+
+
+
+## single feature graphs ====
+covType %>% 
+  ggplot() +
+  geom_density(aes(x = Elevation), 
+               fill = 'darkolivegreen3', 
+               col= "darkolivegreen4",
+               alpha = .65) +
+  facet_grid(Cover_Type~.) +
+  theme_minimal() %+replace%
+  theme(plot.title = element_text(hjust = .5, size = 14),
+        axis.title = element_blank(),
+        axis.text.y = element_blank()) +
+  ggtitle("Density plot of elevation")
+
+covType %>% 
+  ggplot() +
+  geom_density(aes(x = Slope), 
+               fill = 'darkolivegreen3', 
+               col= "darkolivegreen4",
+               alpha = .65) +
+  facet_grid(Cover_Type~.) +
+  theme_minimal() %+replace%
+  theme(plot.title = element_text(hjust = .5, size = 14),
+        axis.title = element_blank(),
+        axis.text.y = element_blank()) +
+  ggtitle("Density plot of Slope")
+
+covType %>% 
+  ggplot() +
+  geom_density(aes(x = Horizontal_Distance_To_Roadways), 
+               fill = 'darkolivegreen3', 
+               col= "darkolivegreen4",
+               alpha = .65) +
+  facet_grid(Cover_Type~.) +
+  theme_minimal() %+replace%
+  theme(plot.title = element_text(hjust = .5, size = 14),
+        axis.title = element_blank(),
+        axis.text.y = element_blank()) +
+  ggtitle("Density plot of Horizontal_Distance_To_Roadways")
+
+## multi feature graphs
+covType %>% 
+  ggplot() +
+  geom_point(aes(x = Aspec, y = Hillshade_Noon),
+             col= "darkolivegreen4")+
+  facet_grid(Cover_Type~.) +
+  theme_minimal() %+replace%
+  theme(plot.title = element_text(hjust = .5, size = 14),
+        axis.title = element_blank(),
+        axis.text.y = element_blank()) +
+  ggtitle("Density plot of elevation")

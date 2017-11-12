@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1510487870513.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8A00928F",
+    "lastKnownWriteTime" : 1510507275,
+    "last_content_update" : 1510507553002,
+    "path" : "~/work/RMB_Case_study/plots.R",
+    "project_path" : "plots.R",
+    "properties" : {
+        "cursorPosition" : "129,0",
+        "docOutlineVisible" : "1",
+        "scrollLine" : "86",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
